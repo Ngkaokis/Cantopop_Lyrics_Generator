@@ -4,3 +4,7 @@ Web Interface of CUHK CSCI FYP Machine Learning assisted Cantopop Lyric Composit
  ## Setup
  1. pip install -r requirements.txt
  2. python manage.py runserver
+
+## .env
+- Django secret key
+- HuggingFace API
