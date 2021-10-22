@@ -1,0 +1,14 @@
+<h1>Cantopop Lyrics Generation App</h1>
+<p>Type in the starting sentence and the system will help you fill in the remaining lyrics</p>
+
+<form method="post" style="margin-top: 50px; margin-bottom: 30px;">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit" id="btnUpload" class="btn btn-primary">Generate</button>
+</form>
+
+<p>
+{% for lyrics in output%}
+    {{lyrics|linebreaks}}
+{% endfor %}
+</p>
