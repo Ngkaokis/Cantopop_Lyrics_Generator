@@ -23,7 +23,12 @@ def index(request):
                 "inputs": form.cleaned_data['starting'],
                 "parameters": {
                     "num_return_sequences": int(form.cleaned_data['number_of_sample'])
-                }})
+                },
+                "options": {
+                    "use_cache": False,
+                    "wait_for_model": True
+                }
+            })
             lyrics_list = []
             for lyrics in output:
                 lyrics_list.append(

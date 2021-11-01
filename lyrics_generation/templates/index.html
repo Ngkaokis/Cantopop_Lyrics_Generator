@@ -1,14 +1,81 @@
-<h1>Cantopop Lyrics Generation App</h1>
-<p>Type in the starting sentence and the system will help you fill in the remaining lyrics</p>
+{% load tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Cantopop Lyrics Generator</title>
+        {% tailwind_css %}
+    </head>
+    <body>
+        <h1 class="font-bold text-3xl">Cantopop Lyrics Generation App</h1>
+        <p>Type in the starting sentence and the system will help you fill in the remaining lyrics</p>
 
-<form method="post" style="margin-top: 50px; margin-bottom: 30px;">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit" id="btnUpload" class="btn btn-primary">Generate</button>
-</form>
+        <form method="post" style="margin-top: 50px; margin-bottom: 30px;">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" id="btnUpload" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Generate</button>
+        </form>
 
-<p>
-{% for lyrics in output%}
-    {{lyrics|linebreaks}}
-{% endfor %}
-</p>
+        {% if output %}
+            <div class="w-1/2 mt-4  rounded">
+                <!-- Tabs -->
+                <ul id="tabs" class="inline-flex w-full px-1 pt-2 ">
+                    {% for lyrics in output%}
+                        <li class="px-4 py-2 -mb-px font-semibold text-gray-800 border-b-2 border-blue-400 rounded-t opacity-50">
+                        {% if forloop.counter == 1 %}
+                            <a id="default-tab" href="#{{ forloop.counter }}">{{ forloop.counter }}</a>
+                        {% else %}
+                            <a href="#{{ forloop.counter }}">{{ forloop.counter }}</a>
+                        {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Tab Contents -->
+                <div id="tab-contents">
+                    {% for lyrics in output%}
+                        {% if forloop.counter == 1 %}
+                            <div id="{{ forloop.counter }}" class="p-4">
+                                {{lyrics|linebreaks}}
+                            </div>
+                        {% else %}
+                            <div id="{{ forloop.counter }}" class="hidden p-4">
+                                {{lyrics|linebreaks}}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div> 
+            </div>
+        {% endif %}
+
+    </body>
+    <script type="text/javascript">
+            let tabsContainer = document.querySelector("#tabs");
+
+            let tabTogglers = tabsContainer.querySelectorAll("a");
+            console.log(tabTogglers);
+
+            tabTogglers.forEach(function(toggler) {
+            toggler.addEventListener("click", function(e) {
+                e.preventDefault();
+
+                let tabName = this.getAttribute("href");
+
+                let tabContents = document.querySelector("#tab-contents");
+
+                for (let i = 0; i < tabContents.children.length; i++) {
+
+                tabTogglers[i].parentElement.classList.remove("border-blue-400", "border-b",  "-mb-px", "opacity-100");  tabContents.children[i].classList.remove("hidden");
+                if ("#" + tabContents.children[i].id === tabName) {
+                    continue;
+                }
+                tabContents.children[i].classList.add("hidden");
+
+                }
+                e.target.parentElement.classList.add("border-blue-400", "border-b-4", "-mb-px", "opacity-100");
+            });
+            });
+
+            document.getElementById("default-tab").click();
+
+    </script>
+</html>
