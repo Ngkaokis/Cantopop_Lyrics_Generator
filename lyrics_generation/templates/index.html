@@ -1,4 +1,5 @@
 {% load tailwind_tags %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -9,10 +10,12 @@
         <h1 class="font-bold text-3xl">Cantopop Lyrics Generation App</h1>
         <p>Type in the starting sentence and the system will help you fill in the remaining lyrics</p>
 
-        <form method="post" style="margin-top: 50px; margin-bottom: 30px;">
+        <form method="post" class="ml-3" style="margin-top: 30px; margin-bottom: 30px;">
             {% csrf_token %}
-            {{ form }}
-            <button type="submit" id="btnUpload" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Generate</button>
+            <div class="flex flex-col flex-wrap w-1/2" >
+                {{ form }}
+            </div>
+            <button type="submit" id="btnUpload" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded">Generate</button>
         </form>
 
         {% if output %}
@@ -21,61 +24,33 @@
                 <ul id="tabs" class="inline-flex w-full px-1 pt-2 ">
                     {% for lyrics in output%}
                         <li class="px-4 py-2 -mb-px font-semibold text-gray-800 border-b-2 border-blue-400 rounded-t opacity-50">
-                        {% if forloop.counter == 1 %}
-                            <a id="default-tab" href="#{{ forloop.counter }}">{{ forloop.counter }}</a>
-                        {% else %}
-                            <a href="#{{ forloop.counter }}">{{ forloop.counter }}</a>
-                        {% endif %}
+                            <a id="{% if forloop.counter == 1 %}default-tab{% endif %}" href="#{{ forloop.counter }}">{{ forloop.counter }}</a>
                         </li>
                     {% endfor %}
                 </ul>
 
                 <!-- Tab Contents -->
                 <div id="tab-contents">
-                    {% for lyrics in output%}
-                        {% if forloop.counter == 1 %}
-                            <div id="{{ forloop.counter }}" class="p-4">
-                                {{lyrics|linebreaks}}
+                    {% for lyrics in output%}                        
+                        <div class="flex flex-row whitespace-nowrap {% if forloop.counter != 1 %}hidden{% endif %}" id="{{ forloop.counter }}" >
+                            <div class="p-4">
+                                <div>
+                                    <button type="submit" class="speak border-solid border-2 font-bold p-1 border-black rounded">speak</button>
+                                </div>
+                                <br>
+                                <textarea id="lyrics{{ forloop.counter }}" rows="30" cols="50" readonly>{{lyrics.lyrics}}</textarea>
                             </div>
-                        {% else %}
-                            <div id="{{ forloop.counter }}" class="hidden p-4">
-                                {{lyrics|linebreaks}}
+                            <div class="p-4 transform -translate-y-1">
+                                <br><br><br>
+                                {{lyrics.tone|linebreaks}}
                             </div>
-                        {% endif %}
+                        </div>                            
                     {% endfor %}
                 </div> 
             </div>
         {% endif %}
 
     </body>
-    <script type="text/javascript">
-            let tabsContainer = document.querySelector("#tabs");
-
-            let tabTogglers = tabsContainer.querySelectorAll("a");
-            console.log(tabTogglers);
-
-            tabTogglers.forEach(function(toggler) {
-            toggler.addEventListener("click", function(e) {
-                e.preventDefault();
-
-                let tabName = this.getAttribute("href");
-
-                let tabContents = document.querySelector("#tab-contents");
-
-                for (let i = 0; i < tabContents.children.length; i++) {
-
-                tabTogglers[i].parentElement.classList.remove("border-blue-400", "border-b",  "-mb-px", "opacity-100");  tabContents.children[i].classList.remove("hidden");
-                if ("#" + tabContents.children[i].id === tabName) {
-                    continue;
-                }
-                tabContents.children[i].classList.add("hidden");
-
-                }
-                e.target.parentElement.classList.add("border-blue-400", "border-b-4", "-mb-px", "opacity-100");
-            });
-            });
-
-            document.getElementById("default-tab").click();
-
-    </script>
+    <script src="{% static "tab.js" %}"></script>
+    <script src="{% static "text2speech.js" %}"></script>
 </html>

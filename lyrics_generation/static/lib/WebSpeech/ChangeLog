@@ -1,0 +1,16 @@
+4.2 (2015-1-8)
+  fix URI issue; works on Mobile phone
+
+4.1.1 (2014-3-27)
+  fix an issue of onfinish API
+
+4.1 (2013-3-26)
+  fix demo issue.
+  ready API added.
+
+4.0.1
+  fix issues on HTML reading.
+  Drupal module released.
+
+4.0
+  switch flash version to 9 to fix flash plugin issue.

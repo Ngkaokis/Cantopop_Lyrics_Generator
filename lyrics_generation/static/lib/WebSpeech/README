@@ -1,0 +1,48 @@
+WebSpeech is a free javascript library for web developers who want to write pages with voice. It relies on a Web TTS server in the backend. The default one http://wa.eguidedog.net is free for limited bandwidth usage. If you want to have better service, please contact Cameron Wong. You can also setup the Web TTS server yourself. All the softwares we used are free.
+
+Author: Cameron Wong (hgneng at gmail.com)
+Website: http://www.eguidedog.net/WebSpeech.php
+License: please refer to WebSpeech.js
+
+===== Usage =====
+1. Put files under /WebSpeech of you web server (cannot be local files)
+
+2. Embed following script in the HTML page.
+<script type='text/javascript' src='/WebSpeech/WebSpeech.js'></script>
+
+2. Execute Javascript statement to start/pause/stop reading a page.
+WebSpeech.speakHtml();
+WebSpeech.pauseHtml();
+WebSpeech.stopHtml();
+
+===== API =====
+// default is 'http://wa.eguidedog.net/cgi-bin/ekho.pl'
+WebSpeech.server = 'your new TTS server';
+
+WebSpeech.speak('text to speak');
+WebSpeech.pause();
+WebSpeech.resume();
+WebSpeech.stop();
+
+// set callback function, which will be called when speeches finish
+WebSpeech.onfinish = function () { ... };
+
+// voiceName can be EkhoMandarin (default), EkhoCantonese
+// or any voice name in eSpeak
+WebSpeech.setVoice('voiceName')
+
+WebSpeech.getSpeedDelta(); // return speed delta
+WebSpeech.setSpeedDelta(value); // -50 <= value <= 100
+WebSpeech.getPitchDelta();
+WebSpeech.setPitchDelta(value); // -100 <= value <= 100
+WebSpeech.getVolumeDelta();
+WebSpeech.setVolumeDelta(value); // -100 <= value <= 100
+
+// like SaveAs action in the browser
+WebSpeech.saveMp3('text to save to MP3 format file');
+WebSpeech.saveOgg('text to save to OGG format file');
+
+// when data available, callback function will be called and
+// the result will pass as the arguments.
+WebSpeech.getPhonSymbols('text', function (success, symbols) { ... });
+

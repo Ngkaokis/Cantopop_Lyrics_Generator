@@ -1,0 +1,19 @@
+<html>
+<head>
+<script type='text/javascript' src='/WebSpeech/WebSpeech.js'></script>
+</head>
+<body>
+Hello
+<script type='text/javascript'>
+WebSpeech.ready(function() {
+  WebSpeech.setVoice('en');
+  WebSpeech.speak('hello world');
+  WebSpeech.setVoice('de+f2');
+  WebSpeech.setSpeedDelta(50);
+  WebSpeech.speak('Guten Tag');
+  WebSpeech.setVoice('zhy');
+  WebSpeech.speak('123');
+});
+</script>
+</body>
+</html>
