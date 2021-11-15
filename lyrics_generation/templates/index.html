@@ -8,15 +8,35 @@
     </head>
     <body>
         <h1 class="font-bold text-3xl">Cantopop Lyrics Generation App</h1>
-        <p>Type in the starting sentence and the system will help you fill in the remaining lyrics</p>
-
-        <form method="post" class="ml-3" style="margin-top: 30px; margin-bottom: 30px;">
-            {% csrf_token %}
-            <div class="flex flex-col flex-wrap w-1/2" >
-                {{ form }}
+        <div class="flex flex-row">
+            <div class="mr-10">
+                <p>Type in the starting sentence and the system will help you fill in the remaining lyrics</p>
+                <form method="post" class="ml-3" style="margin-top: 30px; margin-bottom: 30px;">
+                    {% csrf_token %}
+                    <div class="flex flex-col flex-wrap w-1/2" >
+                        {{ form }}
+                    </div>
+                    <button type="submit" id="btnUpload" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded">Generate</button>
+                </form>
             </div>
-            <button type="submit" id="btnUpload" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded">Generate</button>
-        </form>
+            <div>
+                <p>
+                    Step to write Cantonpop Lyrics using this website<br>
+                    1.	Convert a music melody to the tones of Cantonese based on the pitch of the music notes.<br>
+                    2.	Input the tones and the model will help you fill in the lyrics.
+                    <br><br>
+                    notes: <br>
+                    tone 1, 2 generally refers to high pitch<br>
+                    tone 3, 5 generally refers to middle-high pitch<br>
+                    tone 6 generally refers to middle-low pitch<br>
+                    tone 4 generally refers to low pitch<br>
+                    <br>
+                    No fixed rule in melody-tone conversion!<br>
+                    It's flexible to do the conversion as long as following the corresponding range from tone to melody pitch!
+                </p>
+            </div> 
+        </div>
+        
 
         {% if output %}
             <div class="w-1/2 mt-4  rounded">
