@@ -23,8 +23,8 @@ def index(request):
         if form.is_valid():
             input_text = ""
             for char in form.cleaned_data['starting']:
-                input_text+=char
-                input_text+=" "
+                input_text += char
+                input_text += " "
             output = query({
                 "inputs": input_text,
                 "parameters": {
@@ -64,6 +64,7 @@ def index(request):
             form = LyricsForm()
             lyrics_list = []
     else:
+        requests.post(API_URL, headers=headers)
         form = LyricsForm()
         lyrics_list = []
 
