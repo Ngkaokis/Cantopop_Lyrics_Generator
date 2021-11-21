@@ -808,6 +808,10 @@ select {
   }
 }
 
+.invisible {
+  visibility: hidden;
+}
+
 .static {
   position: static;
 }

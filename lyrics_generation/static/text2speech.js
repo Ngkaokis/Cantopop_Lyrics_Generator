@@ -4,9 +4,11 @@
     WebSpeech.setSpeedDelta(-15)
 }) */
 const synth = window.speechSynthesis;
-
+const voices = window.speechSynthesis.getVoices();
+console.log(voices)
 let speakButtons = document.querySelectorAll(".speak");
 console.log(speakButtons);
+let voice = 1
 
 speakButtons.forEach(function (button, index) {
     button.addEventListener("click", function (e) {
@@ -17,6 +19,9 @@ speakButtons.forEach(function (button, index) {
         u.id = (index + 1).toString();
         u.onboundary = onboundaryHandler;
         u.lang = 'zh-HK';
+        u.voice = synth.getVoices()[voice];
+        console.log("test")
+        console.log(u.voice)
         u.text = document.getElementById('lyrics' + (index + 1).toString()).
             value
         synth.cancel();
@@ -24,6 +29,20 @@ speakButtons.forEach(function (button, index) {
     });
 });
 
+let dropdown = document.querySelector("#dropdown")
+dropdown.addEventListener("click", function (e) {
+    e.preventDefault();
+    document.querySelector("#voices").classList.toggle("hidden");
+})
+let dropdown_options = document.querySelectorAll(".voice");
+dropdown_options.forEach(function (option) {
+    option.addEventListener("click", function (e) {
+        e.preventDefault();
+        voice = option.value
+        console.log("change voice")
+        document.querySelector("#voices").classList.toggle("hidden")
+    });
+})
 
 function onboundaryHandler(event) {
     var textarea = document.getElementById('lyrics' + event.utterance.id)
