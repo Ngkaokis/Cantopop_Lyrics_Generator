@@ -19,7 +19,12 @@ speakButtons.forEach(function (button, index) {
         u.id = (index + 1).toString();
         u.onboundary = onboundaryHandler;
         u.lang = 'zh-HK';
+        //synth.getVoices().forEach((e, idx) => voice = (e.lang == u.lang) ? idx : voice)
+        console.log(voice)
         u.voice = synth.getVoices()[voice];
+        if (u.voice.lang != 'zh-HK'){
+           u.voice = synth.getVoices()[17]
+        }
         console.log("test")
         console.log(u.voice)
         u.text = document.getElementById('lyrics' + (index + 1).toString()).

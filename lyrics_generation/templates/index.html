@@ -1,20 +1,28 @@
 {% load tailwind_tags %}
 {% load static %}
+{% load percentage %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <title>Cantopop Lyrics Generator</title>
         {% tailwind_css %}
     </head>
-    <body>
-        <h1 class="font-bold text-3xl">Cantopop Lyrics Generation App</h1>
+    <body class="p-5">
+        <h1 class="font-bold text-3xl">Tone2Cantopop</h1>
         <div class="flex flex-row">
             <div class="mr-10">
-                <p>Type in the starting sentence and the system will help you fill in the remaining lyrics</p>
                 <form method="post" class="ml-3" style="margin-top: 30px; margin-bottom: 30px;">
                     {% csrf_token %}
-                    <div class="flex flex-col flex-wrap w-1/2" >
-                        {{ form }}
+                    <div class="flex flex-row">
+                        <div class="flex flex-col mr-5">
+                            {{ form.tone.label }}
+                            {{ form.tone }}
+                        </div>
+                        
+                        <div class="flex flex-col flex-wrap" >
+                            {{ form.number_of_sample.label }}
+                            {{ form.number_of_sample }}
+                        </div>
                     </div>
                     <button type="submit" id="btnUpload" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded">Generate</button>
                 </form>
@@ -39,7 +47,7 @@
         <div>
             <button id="dropdown" class="border-solid border-2 font-bold p-1 border-black rounded">Voices</button>
             <div id="voices" class="hidden">
-                <option class="voice" value=2>Male</option>
+                <option class="voice" value=0>Male</option>
                 <option class="voice" value=1>Female</option>
             </div>
         </div>
@@ -57,19 +65,31 @@
 
                 <!-- Tab Contents -->
                 <div id="tab-contents">
-                    {% for lyrics in output%}                        
-                        <div class="flex flex-row whitespace-nowrap {% if forloop.counter != 1 %}hidden{% endif %}" id="{{ forloop.counter }}" >
-                            <div class="p-4">
+                    {% for lyrics in output%}
+                        <div class="{% if forloop.counter != 1 %}hidden{% endif %}" id="{{ forloop.counter }}" >
+                            <div>
+                                <button type="submit" class="speak border-solid border-2 font-bold p-1 border-black rounded">speak</button>
+                            </div>
+                            <div class="flex flex-row whitespace-nowrap">
                                 <div>
-                                    <button type="submit" class="speak border-solid border-2 font-bold p-1 border-black rounded">speak</button>
+                                    <br>
+                                    <textarea id="lyrics{{ forloop.counter }}" rows="30" cols="50" readonly>{{lyrics.lyrics}}
+                                    </textarea>
                                 </div>
-                                <br>
-                                <textarea id="lyrics{{ forloop.counter }}" rows="30" cols="50" readonly>{{lyrics.lyrics}}</textarea>
+                                <div class="p-4 transform -translate-y-1">
+                                    <p>Input Tone</p>
+                                    {{input|linebreaks}}
+                                </div>
+                                <div class="p-4 transform -translate-y-1">
+                                    <p>Output Tone</p>
+                                    {{lyrics.tone|linebreaks}}
+                                </div>
+                                <div>
+                                    <h2 class="mt-3">Tone Accuracy</h2>
+                                    <p>{{lyrics.accuracy|percentage}}</p>
+                                </div>                                
                             </div>
-                            <div class="p-4 transform -translate-y-1">
-                                <br><br><br>
-                                {{lyrics.tone|linebreaks}}
-                            </div>
+                            
                         </div>                            
                     {% endfor %}
                 </div> 
